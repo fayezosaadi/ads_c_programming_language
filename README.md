@@ -1,1 +1,1 @@
-# ads_c_programming_language
+# Algorithms and Data Structures in C 
