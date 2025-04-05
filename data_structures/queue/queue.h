@@ -17,7 +17,7 @@ void enqueue(Queue *queue, void *value);
 
 void dequeue(Queue *queue);
 
-void *peek(const Queue *queue);
+void *queue_peek(const Queue *queue);
 
 bool is_queue_empty(const Queue *queue);
 

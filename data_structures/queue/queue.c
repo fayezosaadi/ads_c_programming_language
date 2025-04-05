@@ -58,7 +58,7 @@ void dequeue(Queue *queue) {
     free(head);
 }
 
-void *peek(const Queue *queue) {
+void *queue_peek(const Queue *queue) {
     if (is_queue_empty(queue)) return NULL;
     return queue->head->value;
 }
