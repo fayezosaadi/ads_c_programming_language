@@ -19,7 +19,7 @@ struct Queue {
     QNode *tail;
 };
 
-QNode *create_queue_node(void *value) {
+QNode *queue_node_create(void *value) {
     QNode *node = malloc(sizeof(QNode));
     node->value = value;
     node->next = NULL;
@@ -39,7 +39,7 @@ void queue_destroy(Queue *queue) {
 }
 
 void enqueue(Queue *queue, void *value) {
-    QNode *node = create_queue_node(value);
+    QNode *node = queue_node_create(value);
 
     if (is_queue_empty(queue)) queue->head = node;
     else queue->tail->next = node;
