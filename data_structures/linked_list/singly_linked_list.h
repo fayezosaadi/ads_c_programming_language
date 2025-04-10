@@ -8,24 +8,24 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-typedef struct SinglyList SinglyList;
+typedef struct SList SList;
 
-SinglyList *singly_list_create(void);
+SList *list_create(void (*print_func)(const void *value));
 
-void singly_list_destroy(SinglyList *list);
+void list_destroy(SList *list);
 
-void singly_list_prepend(SinglyList *list, void *value);
+void list_prepend(SList *list, void *value);
 
-void singly_list_append(SinglyList *list, void *value);
+void list_append(SList *list, void *value);
 
-void singly_list_insert(SinglyList *list, size_t index, void *value);
+void list_insert(SList *list, size_t index, void *value);
 
-void singly_list_remove(SinglyList *list, size_t index);
+void list_remove(SList *list, size_t index);
 
-void singly_list_reverse(SinglyList *list);
+void list_reverse(SList *list);
 
-bool is_singly_list_empty(const SinglyList *list);
+bool is_list_empty(const SList *list);
 
-void print_singly_list(const SinglyList *list);
+void print_list(const SList *list);
 
 #endif //SINGLY_LINKED_LIST_H

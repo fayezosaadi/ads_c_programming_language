@@ -2,7 +2,7 @@
 // Created by tech4life on 05/04/25.
 //
 
-#include "singly_linked_list.h"
+#include "doubly_linked_list.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,9 +12,10 @@ typedef struct Node Node;
 struct Node {
     void *value;
     Node *next;
+    Node *prev;
 };
 
-struct SList {
+struct DList {
     Node *head;
     Node *tail;
     size_t length;
@@ -27,11 +28,12 @@ static Node *node_create(void *value) {
 
     node->value = value;
     node->next = NULL;
+    node->prev = NULL;
     return node;
 }
 
-SList *list_create(void (*print_func)(const void *value)) {
-    SList *list = malloc(sizeof(SList));
+DList *list_create(void (*print_func)(const void *value)) {
+    DList *list = malloc(sizeof(DList));
 
     list->head = NULL;
     list->tail = NULL;
@@ -41,7 +43,7 @@ SList *list_create(void (*print_func)(const void *value)) {
     return list;
 }
 
-void list_destroy(SList *list) {
+void list_destroy(DList *list) {
     Node *current = list->head;
 
     while (current) {
@@ -53,27 +55,34 @@ void list_destroy(SList *list) {
     free(list);
 }
 
-void list_prepend(SList *list, void *value) {
+void list_prepend(DList *list, void *value) {
     Node *node = node_create(value);
 
-    if (is_list_empty(list)) list->tail = node;
-    else node->next = list->head;;
+    if (is_list_empty(list)) {
+        list->tail = node;
+    } else {
+        list->head->prev = node;
+        node->next = list->head;
+    }
 
     list->head = node;
     list->length++;
 }
 
-void list_append(SList *list, void *value) {
+void list_append(DList *list, void *value) {
     Node *node = node_create(value);
 
     if (is_list_empty(list)) list->head = node;
-    else list->tail->next = node;
+    else {
+        list->tail->next = node;
+        node->prev = list->tail;
+    }
 
     list->tail = node;
     list->length++;
 }
 
-Node *list_traverse_to_index(const SList *list, const size_t index) {
+Node *list_traverse_to_index(const DList *list, const size_t index) {
     Node *node = list->head;
     for (size_t i = 0; i < index; i++) {
         node = node->next;
@@ -81,61 +90,65 @@ Node *list_traverse_to_index(const SList *list, const size_t index) {
     return node;
 }
 
-void list_insert(SList *list, const size_t index, void *value) {
+void list_insert(DList *list, const size_t index, void *value) {
     if (index >= list->length) return list_append(list, value);
     if (index == 0) return list_prepend(list, value);
 
     Node *node = node_create(value);
     Node *leader = list_traverse_to_index(list, index - 1);
+    Node *follower = leader->next;
 
-    node->next = leader->next;
+    follower->prev = node;
+    node->next = follower;
+    node->prev = leader;
     leader->next = node;
     list->length++;
 }
 
-void list_remove(SList *list, const size_t index) {
+void list_remove(DList *list, const size_t index) {
     if (index >= list->length) return;
 
     Node *to_remove = NULL;
     if (index == 0) {
         to_remove = list->head;
-        list->head = list->head->next;
+        list->head = to_remove->next;
 
-        if (list->length == 1) list->tail = NULL;
+        if (list->head) list->head->prev = NULL;
+        else list->tail = NULL;
     } else {
         Node *leader = list_traverse_to_index(list, index - 1);
         to_remove = leader->next;
         leader->next = to_remove->next;
 
         if (index == list->length - 1) list->tail = leader;
+        else to_remove->next->prev = leader;
     }
 
     free(to_remove);
     list->length--;
 }
 
-void list_reverse(SList *list) {
+void list_reverse(DList *list) {
     if (is_list_empty(list)) return;
 
-    Node *prev = NULL;
     Node *current = list->head;
-    list->tail = list->head;
+    list->head = list->tail;
+    list->tail = current;
 
     while (current) {
-        Node *next = current->next;
-        current->next = prev;
-        prev = current;
-        current = next;
-    }
+        Node *temp = current->next;
+        current->next = current->prev;
+        current->prev = temp;
 
-    list->head = prev;
+        current = temp;
+    }
 }
 
-bool is_list_empty(const SList *list) {
+bool is_list_empty(const DList *list) {
     return !list->head;
 }
 
-void print_list(const SList *list) {
+void print_list(const DList *list) {
     const Node *current = list->head;
 
     while (current) {
