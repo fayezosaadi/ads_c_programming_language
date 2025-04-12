@@ -8,24 +8,24 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-typedef struct SList SList;
+typedef struct List List;
 
-SList *list_create(void (*print_func)(const void *value));
+List *list_create(void (*print_func)(const void *value));
 
-void list_destroy(SList *list);
+void list_destroy(List *list);
 
-void list_prepend(SList *list, void *value);
+void list_prepend(List *list, void *value);
 
-void list_append(SList *list, void *value);
+void list_append(List *list, void *value);
 
-void list_insert(SList *list, size_t index, void *value);
+void list_insert(List *list, size_t index, void *value);
 
-void list_remove(SList *list, size_t index);
+void list_remove(List *list, size_t index);
 
-void list_reverse(SList *list);
+void list_reverse(List *list);
 
-bool is_list_empty(const SList *list);
+bool is_list_empty(const List *list);
 
-void print_list(const SList *list);
+void print_list(const List *list);
 
 #endif //SINGLY_LINKED_LIST_H

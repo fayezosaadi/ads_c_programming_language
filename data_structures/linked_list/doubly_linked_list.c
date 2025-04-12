@@ -15,7 +15,7 @@ struct Node {
     Node *prev;
 };
 
-struct DList {
+struct List {
     Node *head;
     Node *tail;
     size_t length;
@@ -32,8 +32,8 @@ static Node *node_create(void *value) {
     return node;
 }
 
-DList *list_create(void (*print_func)(const void *value)) {
-    DList *list = malloc(sizeof(DList));
+List *list_create(void (*print_func)(const void *value)) {
+    List *list = malloc(sizeof(List));
 
     list->head = NULL;
     list->tail = NULL;
@@ -43,7 +43,7 @@ DList *list_create(void (*print_func)(const void *value)) {
     return list;
 }
 
-void list_destroy(DList *list) {
+void list_destroy(List *list) {
     Node *current = list->head;
 
     while (current) {
@@ -55,7 +55,7 @@ void list_destroy(DList *list) {
     free(list);
 }
 
-void list_prepend(DList *list, void *value) {
+void list_prepend(List *list, void *value) {
     Node *node = node_create(value);
 
     if (is_list_empty(list)) {
@@ -69,7 +69,7 @@ void list_prepend(DList *list, void *value) {
     list->length++;
 }
 
-void list_append(DList *list, void *value) {
+void list_append(List *list, void *value) {
     Node *node = node_create(value);
 
     if (is_list_empty(list)) list->head = node;
@@ -82,7 +82,7 @@ void list_append(DList *list, void *value) {
     list->length++;
 }
 
-Node *list_traverse_to_index(const DList *list, const size_t index) {
+Node *list_traverse_to_index(const List *list, const size_t index) {
     Node *node = list->head;
     for (size_t i = 0; i < index; i++) {
         node = node->next;
@@ -90,7 +90,7 @@ Node *list_traverse_to_index(const DList *list, const size_t index) {
     return node;
 }
 
-void list_insert(DList *list, const size_t index, void *value) {
+void list_insert(List *list, const size_t index, void *value) {
     if (index >= list->length) return list_append(list, value);
     if (index == 0) return list_prepend(list, value);
 
@@ -105,7 +105,7 @@ void list_insert(DList *list, const size_t index, void *value) {
     list->length++;
 }
 
-void list_remove(DList *list, const size_t index) {
+void list_remove(List *list, const size_t index) {
     if (index >= list->length) return;
 
     Node *to_remove = NULL;
@@ -128,7 +128,7 @@ void list_remove(DList *list, const size_t index) {
     list->length--;
 }
 
-void list_reverse(DList *list) {
+void list_reverse(List *list) {
     if (is_list_empty(list)) return;
 
     Node *current = list->head;
@@ -144,11 +144,11 @@ void list_reverse(DList *list) {
     }
 }
 
-bool is_list_empty(const DList *list) {
+bool is_list_empty(const List *list) {
     return !list->head;
 }
 
-void print_list(const DList *list) {
+void print_list(const List *list) {
     const Node *current = list->head;
 
     while (current) {

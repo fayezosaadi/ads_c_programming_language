@@ -8,24 +8,24 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-typedef struct DList DList;
+typedef struct List List;
 
-DList *list_create(void (*print_func)(const void *value));
+List *list_create(void (*print_func)(const void *value));
 
-void list_destroy(DList *list);
+void list_destroy(List *list);
 
-void list_prepend(DList *list, void *value);
+void list_prepend(List *list, void *value);
 
-void list_append(DList *list, void *value);
+void list_append(List *list, void *value);
 
-void list_insert(DList *list, size_t index, void *value);
+void list_insert(List *list, size_t index, void *value);
 
-void list_remove(DList *list, size_t index);
+void list_remove(List *list, size_t index);
 
-void list_reverse(DList *list);
+void list_reverse(List *list);
 
-bool is_list_empty(const DList *list);
+bool is_list_empty(const List *list);
 
-void print_list(const DList *list);
+void print_list(const List *list);
 
 #endif //DOUBLY_LINKED_LIST_H

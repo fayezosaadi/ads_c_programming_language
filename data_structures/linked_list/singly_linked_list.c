@@ -14,7 +14,7 @@ struct Node {
     Node *next;
 };
 
-struct SList {
+struct List {
     Node *head;
     Node *tail;
     size_t length;
@@ -30,8 +30,8 @@ static Node *node_create(void *value) {
     return node;
 }
 
-SList *list_create(void (*print_func)(const void *value)) {
-    SList *list = malloc(sizeof(SList));
+List *list_create(void (*print_func)(const void *value)) {
+    List *list = malloc(sizeof(List));
 
     list->head = NULL;
     list->tail = NULL;
@@ -41,7 +41,7 @@ SList *list_create(void (*print_func)(const void *value)) {
     return list;
 }
 
-void list_destroy(SList *list) {
+void list_destroy(List *list) {
     Node *current = list->head;
 
     while (current) {
@@ -53,7 +53,7 @@ void list_destroy(SList *list) {
     free(list);
 }
 
-void list_prepend(SList *list, void *value) {
+void list_prepend(List *list, void *value) {
     Node *node = node_create(value);
 
     if (is_list_empty(list)) list->tail = node;
@@ -63,7 +63,7 @@ void list_prepend(SList *list, void *value) {
     list->length++;
 }
 
-void list_append(SList *list, void *value) {
+void list_append(List *list, void *value) {
     Node *node = node_create(value);
 
     if (is_list_empty(list)) list->head = node;
@@ -73,7 +73,7 @@ void list_append(SList *list, void *value) {
     list->length++;
 }
 
-Node *list_traverse_to_index(const SList *list, const size_t index) {
+Node *list_traverse_to_index(const List *list, const size_t index) {
     Node *node = list->head;
     for (size_t i = 0; i < index; i++) {
         node = node->next;
@@ -81,7 +81,7 @@ Node *list_traverse_to_index(const SList *list, const size_t index) {
     return node;
 }
 
-void list_insert(SList *list, const size_t index, void *value) {
+void list_insert(List *list, const size_t index, void *value) {
     if (index >= list->length) return list_append(list, value);
     if (index == 0) return list_prepend(list, value);
 
@@ -93,7 +93,7 @@ void list_insert(SList *list, const size_t index, void *value) {
     list->length++;
 }
 
-void list_remove(SList *list, const size_t index) {
+void list_remove(List *list, const size_t index) {
     if (index >= list->length) return;
 
     Node *to_remove = NULL;
@@ -114,7 +114,7 @@ void list_remove(SList *list, const size_t index) {
     list->length--;
 }
 
-void list_reverse(SList *list) {
+void list_reverse(List *list) {
     if (is_list_empty(list)) return;
 
     Node *prev = NULL;
@@ -131,11 +131,11 @@ void list_reverse(SList *list) {
     list->head = prev;
 }
 
-bool is_list_empty(const SList *list) {
+bool is_list_empty(const List *list) {
     return !list->head;
 }
 
-void print_list(const SList *list) {
+void print_list(const List *list) {
     const Node *current = list->head;
 
     while (current) {

@@ -7,20 +7,20 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct QNode QNode;
+typedef struct Node Node;
 
-struct QNode {
+struct Node {
     void *value;
-    QNode *next;
+    Node *next;
 };
 
 struct Queue {
-    QNode *head;
-    QNode *tail;
+    Node *head;
+    Node *tail;
 };
 
-QNode *queue_node_create(void *value) {
-    QNode *node = malloc(sizeof(QNode));
+Node *node_create(void *value) {
+    Node *node = malloc(sizeof(Node));
     node->value = value;
     node->next = NULL;
 
@@ -39,7 +39,7 @@ void queue_destroy(Queue *queue) {
 }
 
 void enqueue(Queue *queue, void *value) {
-    QNode *node = queue_node_create(value);
+    Node *node = node_create(value);
 
     if (is_queue_empty(queue)) queue->head = node;
     else queue->tail->next = node;
@@ -50,7 +50,7 @@ void enqueue(Queue *queue, void *value) {
 void dequeue(Queue *queue) {
     if (is_queue_empty(queue)) return;
 
-    QNode *head = queue->head;
+    Node *head = queue->head;
     queue->head = head->next;
 
     if (queue->head == NULL) queue->tail = NULL;
