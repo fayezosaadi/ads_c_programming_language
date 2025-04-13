@@ -25,7 +25,7 @@ static void print_node_int(const void *value) {
 }
 
 int main() {
-    DList *list = list_create(print_node_int);
+    List *list = list_create(print_node_int);
     
     int a = 10, b = 20, c = 30;
     
